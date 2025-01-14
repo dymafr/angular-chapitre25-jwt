@@ -125,7 +125,7 @@ body {
   font-family: var(--font-family);
   font-optical-sizing: auto;
   color: var(--text-color);
-  padding: 50px;
+  background-color: var(--gray-100);
 }
 
 .card {
@@ -202,6 +202,7 @@ img {
 a {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 
 a:hover {
@@ -231,14 +232,6 @@ label {
 
 .error {
   color: red;
-}
-
-.ng-invalid.ng-touched {
-  border-color: red;
-}
-
-.ng-valid.ng-touched {
-  border-color: green;
 }
 
 .shadow {
