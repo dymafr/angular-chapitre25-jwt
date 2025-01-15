@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../shared/services/user.service';
 import { UserForm } from '../../shared/interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -23,6 +24,8 @@ import { UserForm } from '../../shared/interfaces';
         } @else if (emailControl.errors?.['email'] && (emailControl.touched ||
         formSubmitted())) {
         <p class="error">Email non valide</p>
+        } @else if (emailControl.errors?.['emailAlreadyUsed']) {
+        <p class="error">Adresse email déjà utilisée</p>
         }
       </div>
       <div class="flex flex-col mb-20">
@@ -64,6 +67,7 @@ export class SignupComponent {
     username: ['', [Validators.required, Validators.minLength(2)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
+  readonly router = inject(Router);
   formSubmitted = signal(false);
   get emailControl() {
     return this.userForm.get('email') as FormControl;
@@ -80,8 +84,12 @@ export class SignupComponent {
       const userForm = this.userForm.getRawValue() as UserForm;
       try {
         const user = await this.userService.createUser(userForm);
-      } catch (e) {
+        this.router.navigateByUrl('/signin');
+      } catch (e: any) {
         console.log(e);
+        if (e.message === 'adresse email déjà utilisée') {
+          this.emailControl.setErrors({ emailAlreadyUsed: true });
+        }
       }
     }
   }
