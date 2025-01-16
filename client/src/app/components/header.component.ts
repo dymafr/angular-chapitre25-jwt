@@ -15,7 +15,7 @@ import { AuthService } from '../shared/services/auth.service';
         <a routerLink="/profile" routerLinkActive="text-primary">Profil</a>
       </li>
       <li>
-        <a routerLink="/logout" routerLinkActive="text-primary">Déconnexion</a>
+        <span (click)="logout()" class="logout">Déconnexion</span>
       </li>
       } @else if (isLoggedin() === false) {
       <li>
@@ -27,15 +27,13 @@ import { AuthService } from '../shared/services/auth.service';
       }
     </ul>
   `,
-  styles: `:host { background-color: white; padding: 12px; }`,
+  styles: `:host { background-color: white; padding: 12px; } .logout { cursor: pointer; }`,
 })
 export class HeaderComponent {
   readonly authService = inject(AuthService);
   isLoggedin = this.authService.isLoggedin;
 
-  constructor() {
-    effect(() => {
-      console.log(this.isLoggedin());
-    });
+  public logout() {
+    this.authService.logout();
   }
 }

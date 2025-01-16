@@ -1,5 +1,6 @@
-import { computed, Injectable, resource, signal } from '@angular/core';
+import { computed, inject, Injectable, resource } from '@angular/core';
 import { SigninForm, User } from '../interfaces';
+import { Router } from '@angular/router';
 
 const API_AUTH = '/api/auth';
 
@@ -19,6 +20,7 @@ export class AuthService {
     }
   });
   currentUser = computed(() => this.currentUserResource.value());
+  readonly router = inject(Router);
 
   async signin(signinForm: SigninForm): Promise<User> {
     const response = await fetch(API_AUTH, {
@@ -40,5 +42,13 @@ export class AuthService {
 
   async fetchCurrentUser() {
     return (await fetch(`${API_AUTH}/current`)).json();
+  }
+
+  async logout() {
+    await fetch(API_AUTH, {
+      method: 'DELETE',
+    });
+    this.currentUserResource.reload();
+    this.router.navigateByUrl('/');
   }
 }
