@@ -1,29 +1,29 @@
 import { Routes } from '@angular/router';
-import { HomepageComponent } from './views/homepage/homepage.component';
-import { SignupComponent } from './views/signup/signup.component';
-import { SigninComponent } from './views/signin/signin.component';
-import { NotfoundComponent } from './views/not-found/not-found.component';
-import { ProfileComponent } from './views/profile/profile.component';
-import { authGuard } from './shared/guards/auth.guard';
+import { Homepage } from './views/homepage/homepage';
+import { Signup } from './views/signup/signup';
+import { Signin } from './views/signin/signin';
+import { NotfoundComponent } from './views/not-found/not-found';
+import { Profile } from './views/profile/profile';
+import { authGuard } from './shared/guards/auth';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent,
+    component: Homepage,
     pathMatch: 'full',
   },
   {
     path: 'signup',
-    component: SignupComponent,
+    component: Signup,
   },
   {
     path: 'signin',
-    component: SigninComponent,
+    component: Signin,
   },
   {
     path: 'profile',
     canActivate: [authGuard],
-    component: ProfileComponent,
+    component: Profile,
   },
   {
     path: '**',

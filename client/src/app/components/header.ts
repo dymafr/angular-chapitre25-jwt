@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthDataClient } from '../shared/services/auth.data-client';
 
 @Component({
   selector: 'app-header',
@@ -29,8 +29,8 @@ import { AuthService } from '../shared/services/auth.service';
   `,
   styles: `:host { background-color: white; padding: 12px; } .logout { cursor: pointer; }`,
 })
-export class HeaderComponent {
-  readonly authService = inject(AuthService);
+export class Header {
+  readonly authService = inject(AuthDataClient);
   isLoggedin = this.authService.isLoggedin;
 
   public logout() {

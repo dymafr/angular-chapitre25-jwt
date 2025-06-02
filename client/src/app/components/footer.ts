@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   template: ` <p>Dyma Copyright © 2025-2026</p> `,
   styles: `:host { background-color: var(--gray-700); color: white; }`,
 })
-export class FooterComponent {}
+export class Footer {}

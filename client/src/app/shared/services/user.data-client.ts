@@ -6,7 +6,7 @@ const API_USERS = '/api/users';
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class UserDataClient {
   async createUser(user: UserForm): Promise<User> {
     const response = await fetch(API_USERS, {
       method: 'POST',

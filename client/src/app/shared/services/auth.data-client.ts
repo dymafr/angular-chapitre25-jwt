@@ -7,7 +7,7 @@ const API_AUTH = '/api/auth';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthDataClient {
   currentUserResource = resource({
     loader: () => this.fetchCurrentUser(),
   });

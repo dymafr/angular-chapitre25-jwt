@@ -1,6 +1,6 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthDataClient } from '../../shared/services/auth.data-client';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +14,7 @@ import { AuthService } from '../../shared/services/auth.service';
    .card { background-color:white; min-width: 500px; }
  `,
 })
-export class ProfileComponent {
-  readonly authService = inject(AuthService);
+export class Profile {
+  readonly authService = inject(AuthDataClient);
   currentUser = this.authService.currentUser;
 }

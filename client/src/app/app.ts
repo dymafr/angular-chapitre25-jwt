@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './components/header.component';
-import { FooterComponent } from './components/footer.component';
+import { Header } from './components/header';
+import { Footer } from './components/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, Header, Footer],
   template: `
     <app-header class="flex align-items-center shadow" />
     <div class="flex-auto flex flex-col">
@@ -15,4 +15,4 @@ import { FooterComponent } from './components/footer.component';
   `,
   styles: `:host { min-height: 100vh; display: flex; flex-direction: column; }`,
 })
-export class AppComponent {}
+export class App {}

@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthDataClient } from '../services/auth.data-client';
 
 export const authGuard: CanActivateFn = async (route, state) => {
-  const authService = inject(AuthService);
+  const authService = inject(AuthDataClient);
   const router = inject(Router);
   const isLoggedin = !!(await authService.fetchCurrentUser());
   if (!isLoggedin) {

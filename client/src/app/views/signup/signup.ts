@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserService } from '../../shared/services/user.service';
+import { UserDataClient } from '../../shared/services/user.data-client';
 import { UserForm } from '../../shared/interfaces';
 import { Router } from '@angular/router';
 
@@ -59,9 +59,9 @@ import { Router } from '@angular/router';
     .card { background-color:white; min-width: 500px; }
   `,
 })
-export class SignupComponent {
+export class Signup {
   readonly fb = inject(FormBuilder);
-  readonly userService = inject(UserService);
+  readonly userService = inject(UserDataClient);
   userForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required, Validators.minLength(2)]],

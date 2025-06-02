@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { SigninForm } from '../../shared/interfaces';
 import { Router } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthDataClient } from '../../shared/services/auth.data-client';
 
 @Component({
   selector: 'app-signin',
@@ -51,9 +51,9 @@ import { AuthService } from '../../shared/services/auth.service';
     .card { background-color:white; min-width: 500px; }
   `,
 })
-export class SigninComponent {
+export class Signin {
   readonly fb = inject(FormBuilder);
-  readonly authService = inject(AuthService);
+  readonly authService = inject(AuthDataClient);
   signinForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
