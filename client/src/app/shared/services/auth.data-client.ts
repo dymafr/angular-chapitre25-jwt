@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, resource } from '@angular/core';
 import { SigninForm, User } from '../interfaces';
 import { Router } from '@angular/router';
+import { httpResource } from '@angular/common/http';
 
 const API_AUTH = '/api/auth';
 
@@ -8,9 +9,16 @@ const API_AUTH = '/api/auth';
   providedIn: 'root',
 })
 export class AuthDataClient {
-  currentUserResource = resource({
-    loader: () => this.fetchCurrentUser(),
-  });
+  // currentUserResource = resource({
+  //   loader: () => this.fetchCurrentUser(),
+  // });
+
+  // Depuis Angular 20, on peut utiliser httpResource
+  currentUserResource = httpResource<User | null>(() => ({
+    url: `${API_AUTH}/current`,
+    defaultValue: null,
+  }));
+
   isLoggedin = computed(() => {
     const value = this.currentUserResource.value();
     if (value !== undefined) {
@@ -40,9 +48,9 @@ export class AuthDataClient {
     }
   }
 
-  async fetchCurrentUser() {
-    return (await fetch(`${API_AUTH}/current`)).json();
-  }
+  // async fetchCurrentUser() {
+  //   return (await fetch(`${API_AUTH}/current`)).json();
+  // }
 
   async logout() {
     await fetch(API_AUTH, {
