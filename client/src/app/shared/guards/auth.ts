@@ -1,5 +1,5 @@
 import { effect, inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { AuthDataClient } from '../services/auth.data-client';
 
 // export const authGuard: CanActivateFn = async (route, state) => {
@@ -13,34 +13,37 @@ import { AuthDataClient } from '../services/auth.data-client';
 // };
 
 // Version pour Angular 20 httpResource
-export const authGuard: CanActivateFn = async (route, state) => {
+export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthDataClient);
   const router = inject(Router);
 
-  // 1. Vérifier la valeur actuelle du signal isLoading.
-  //    authService.currentUserResource.isLoading est un signal, donc isLoading() pour lire sa valeur.
-  if (authService.currentUserResource.isLoading()) {
-    // 2. Si c'est en cours de chargement, créer une promesse qui attend que isLoading devienne false.
-    await new Promise<void>((resolve) => {
-      // Créer un effect qui s'exécute lorsque isLoading change.
-      const effectRef = effect(() => {
+  // Le garde retourne une nouvelle Promesse.
+  // Le routeur attendra la résolution de cette Promesse pour décider d'activer ou non la route.
+  // La Promesse se résoudra avec `true` (autoriser), `false` (bloquer), ou un `UrlTree` (rediriger).
+  return new Promise<boolean | UrlTree>((resolve) => {
+    const effectRef = effect(
+      () => {
+        // On exécute le code à l'intérieur de l'effet seulement quand `currentUserResource` n'est plus en cours de chargement.
         if (!authService.currentUserResource.isLoading()) {
-          // Lire la valeur du signal à l'intérieur de l'effect
-          resolve(); // Résoudre la promesse une fois que le chargement est terminé
-          effectRef.destroy(); // Très important : détruire l'effect pour éviter les fuites de mémoire
+          // L'effet a rempli son rôle (la vérification de l'état de chargement),
+          // on le détruit donc manuellement pour éviter des exécutions inutiles ou des fuites de mémoire.
+          effectRef.destroy();
+
+          // On vérifie si l'utilisateur est actuellement connecté en appelant la méthode `isLoggedin` du service d'authentification.
+          const isLoggedIn = authService.isLoggedin();
+
+          if (!isLoggedIn) {
+            // CAS 1: L'utilisateur N'EST PAS connecté.
+            // On résout la Promesse avec un UrlTree qui indique au routeur de rediriger vers '/signin'.
+            resolve(router.createUrlTree(['/signin']));
+          } else {
+            // CAS 2: L'utilisateur EST connecté.
+            // On résout la Promesse avec `true`, ce qui autorise l'accès à la route.
+            resolve(true);
+          }
         }
-      });
-    });
-  }
-
-  // 3. À ce stade, isLoading est false (soit il l'était initialement, soit la promesse s'est résolue).
-  //    On peut maintenant vérifier l'état de connexion.
-  const isLoggedIn = authService.isLoggedin();
-
-  if (!isLoggedIn) {
-    router.navigateByUrl('/signin');
-    return false;
-  }
-
-  return true;
+      },
+      { manualCleanup: true }
+    ); // `manualCleanup: true` indique que nous sommes responsables de la destruction de l'effet.
+  });
 };
