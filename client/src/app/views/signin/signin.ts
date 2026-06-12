@@ -47,6 +47,12 @@ import { AuthService } from 'app/shared/services/auth.service';
           }
         }
       </div>
+      @let authError = authForm().errors();
+      @if (authError) {
+        @for (error of authError; track error) {
+          <p class="error">{{ error.message }}</p>
+        }
+      }
       <button class="btn btn-primary">Connexion</button>
     </form>
   `,
@@ -77,8 +83,10 @@ export class Signin {
             this.router.navigateByUrl('/');
             return;
           } catch (e: any) {
-            console.log(e);
-            return;
+            return {
+              kind: 'wrongEmailPassword',
+              message: 'Email ou mot de passe incorrect',
+            };
           }
         },
       },

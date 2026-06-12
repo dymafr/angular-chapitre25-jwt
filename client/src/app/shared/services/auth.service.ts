@@ -1,7 +1,7 @@
 import { Service } from '@angular/core';
 import { SigninForm, User } from '../interfaces';
 
-export const API_AUTH = '/api/users';
+export const API_AUTH = '/api/auth';
 
 @Service()
 export class AuthService {
