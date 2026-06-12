@@ -1,9 +1,15 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { AuthService } from 'app/shared/services/auth.service';
 
 @Component({
   selector: 'app-profile',
-  template: ` <div class="card"></div> `,
+  imports: [JsonPipe],
+  template: `
+    <div class="card">
+      <pre>{{ currentUser() | json }}</pre>
+    </div>
+  `,
   styles: `
     :host {
       display: flex;
@@ -17,4 +23,7 @@ import { Component, inject } from '@angular/core';
     }
   `,
 })
-export class Profile {}
+export class Profile {
+  readonly authService = inject(AuthService);
+  currentUser = this.authService.currentUser;
+}

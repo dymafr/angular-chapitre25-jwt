@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,18 +10,23 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       <a routerLink="/"> <strong>JWT</strong> </a>
     </div>
     <ul class="flex gap-12">
-      <!-- <li>
-        <a routerLink="/profile" routerLinkActive="text-primary">Profil</a>
-      </li>
-      <li>
-        <span class="logout">Déconnexion</span>
-      </li> -->
-      <li>
-        <a routerLink="/signup" routerLinkActive="text-primary">Inscription</a>
-      </li>
-      <li>
-        <a routerLink="/signin" routerLinkActive="text-primary">Connexion</a>
-      </li>
+      @if (isLoggedin()) {
+        <li>
+          <a routerLink="/profile" routerLinkActive="text-primary">Profil</a>
+        </li>
+        <li>
+          <span (click)="logout()" class="logout">Déconnexion</span>
+        </li>
+      } @else if (isLoggedin() === false) {
+        <li>
+          <a routerLink="/signup" routerLinkActive="text-primary"
+            >Inscription</a
+          >
+        </li>
+        <li>
+          <a routerLink="/signin" routerLinkActive="text-primary">Connexion</a>
+        </li>
+      }
     </ul>
   `,
   styles: `
@@ -33,4 +39,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     }
   `,
 })
-export class Header {}
+export class Header {
+  readonly authService = inject(AuthService);
+  isLoggedin = this.authService.isLoggedin;
+
+  public logout() {
+    this.authService.logout();
+  }
+}
