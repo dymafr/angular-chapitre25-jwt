@@ -13,6 +13,12 @@ import { Footer } from './components/footer';
     </div>
     <app-footer class="flex align-items-center justify-content-center" />
   `,
-  styles: `:host { min-height: 100vh; display: flex; flex-direction: column; }`,
+  styles: `
+    :host {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  `,
 })
 export class App {}
