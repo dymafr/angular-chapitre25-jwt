@@ -4,7 +4,7 @@ import { Signup } from './views/signup/signup';
 import { Signin } from './views/signin/signin';
 import { NotfoundComponent } from './views/not-found/not-found';
 import { Profile } from './views/profile/profile';
-import { authGuard } from './shared/guards/auth';
+import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {

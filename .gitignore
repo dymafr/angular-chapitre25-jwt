@@ -1,1 +1,5 @@
 node_modules
+
+# Clés de signature des jetons JWT : à générer localement, jamais à versionner
+api/keys/*.key
+api/keys/*.key.pub
