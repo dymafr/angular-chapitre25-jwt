@@ -1,13 +1,11 @@
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, inject, Service } from '@angular/core';
 import { SigninForm, User } from '../interfaces';
 import { httpResource } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 export const API_AUTH = '/api/auth';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AuthService {
   // currentUserResource = resource({
   //   loader: () => this.fetchCurrentUser(),

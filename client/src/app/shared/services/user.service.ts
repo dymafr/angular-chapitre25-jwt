@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { User, UserForm } from '../interfaces';
 
 export const API_USERS = '/api/users';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class UserService {
   async createUser(userForm: UserForm): Promise<User> {
     const response = await fetch(API_USERS, {
